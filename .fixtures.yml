@@ -1,0 +1,6 @@
+fixtures:
+  repositories:
+    stdlib:
+      repo: "https://github.com/Adaptavist/puppetlabs-stdlib"
+  symlinks:
+    adopt_openjdk: "#{source_dir}"
