@@ -13,7 +13,7 @@ define adopt_openjdk::java_install(
 
     $version_patch=$java_version_details['version_patch']
     $download_url = $name ? {
-        '10' => "https://github.com/AdoptOpenJDK/openjdk${name}-releases/releases/download/jdk-${version}%2B${version_patch}/OpenJDK${name}_x64_Linux_jdk-${version}.${version_patch}.tar.gz",
+        '10' => "https://github.com/AdoptOpenJDK/openjdk${name}-releases/releases/download/jdk-${version}+${version_patch}/OpenJDK${name}_x64_Linux_jdk-${version}+${version_patch}.tar.gz",
         default => "https://github.com/AdoptOpenJDK/openjdk${name}-binaries/releases/download/jdk-${version}%2B${version_patch}/OpenJDK${name}U-jdk_x64_linux_hotspot_${version}_${version_patch}.tar.gz"
     }
 
