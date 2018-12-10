@@ -3,6 +3,7 @@ class adopt_openjdk(
     $default_ver            = $adopt_openjdk::params::default_ver,
     $version_details        = $adopt_openjdk::params::version_details,
     $install_dir            = $adopt_openjdk::params::install_dir,
+    $tmp_dir                = $adopt_openjdk::params::tmp_dir,
 ) inherits  adopt_openjdk::params {
 
     validate_array($versions)
@@ -19,6 +20,9 @@ class adopt_openjdk(
         } else {
             Adopt_openjdk::Java_install<| |> -> Adopt_openjdk::Set_default<| |>
         }
+        file { [$tmp_dir, $install_dir]:
+                ensure => 'directory',
+        } ->
         adopt_openjdk::java_install { $versions:
             version_details => $version_details,
             install_dir     => $install_dir

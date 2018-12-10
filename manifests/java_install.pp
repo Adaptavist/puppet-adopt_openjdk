@@ -20,16 +20,14 @@ define adopt_openjdk::java_install(
     exec {
         "download_openjdk_tar_${name}":
             command   => "wget ${download_url}",
-            logoutput => true,
+            logoutput => on_failure,
             cwd       => $tmp_dir,
-            timeout   => 1800
-    } 
+    } ->
     exec {
         "extract_openjdk_tar_${name}":
-            command   => "$(ls -la ${tmp_dir}; tar -C ${install_dir} -xf $(ls ${tmp_dir} | grep OpenJDK${name} | sort -V | tail -1)",
-            logoutput => true,
+            command   => "mkdir -p ${install_dir}; tar -C ${install_dir} -xf $(ls ${tmp_dir} | grep OpenJDK${name} | sort -V | tail -1)",
+            logoutput => on_failure,
             cwd       => $tmp_dir,
-            require   => Exec["download_openjdk_tar_${name}"]
     }
 
     if $::osfamily == 'RedHat'{
