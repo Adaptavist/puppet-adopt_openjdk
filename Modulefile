@@ -1,5 +1,5 @@
 name 'adaptavist/adopt_openjdk'
-version '1.0.0'
+version '1.0.1'
 source 'git@bitbucket.org:Adaptavist/puppet-adopt_openjdk.git'
 author 'adaptavist'
 summary 'adopt_openjdk Module' 
