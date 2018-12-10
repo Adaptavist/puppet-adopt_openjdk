@@ -29,7 +29,7 @@ define adopt_openjdk::java_install(
             command   => "$(ls -la ${tmp_dir}; tar -C ${install_dir} -xf $(ls ${tmp_dir} | grep OpenJDK${name} | sort -V | tail -1)",
             logoutput => true,
             cwd       => $tmp_dir,
-            require   => "download_openjdk_tar_${name}"
+            require   => Exec["download_openjdk_tar_${name}"]
     }
 
     if $::osfamily == 'RedHat'{
