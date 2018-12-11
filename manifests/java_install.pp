@@ -1,7 +1,8 @@
 define adopt_openjdk::java_install(
-    $version_details,
-    $install_dir     = '/usr/java',
-    $tmp_dir         = '/tmp',
+    $version_details     = $adopt_openjdk::params::version_details,
+    $create_link_to_path = $adopt_openjdk::params::create_link_to_path,
+    $install_dir         = $adopt_openjdk::params::install_dir,
+    $tmp_dir             = $adopt_openjdk::params::tmp_dir,
     ) {
 
     $package_name=$name
@@ -22,12 +23,21 @@ define adopt_openjdk::java_install(
             command   => "wget ${download_url}",
             logoutput => on_failure,
             cwd       => $tmp_dir,
-    } ->
-    exec {
+    }
+    -> exec {
         "extract_openjdk_tar_${name}":
-            command   => "mkdir -p ${install_dir}; tar -C ${install_dir} -xf $(ls ${tmp_dir} | grep OpenJDK${name} | sort -V | tail -1)",
+            command   => "tar -C ${install_dir} -xf $(ls ${tmp_dir} | grep OpenJDK${name} | sort -V | tail -1)",
             logoutput => on_failure,
             cwd       => $tmp_dir,
+    }
+
+    if ($create_link_to_path) {
+        exec {
+        "create_symlink_to_path_${create_link_to_path}${name}":
+            command => "ln -sf ${install_dir}/$(ls ${install_dir}/ | grep jdk-${name} | sort -V| tail -1) ${create_link_to_path}${name}",
+            require => Exec["extract_openjdk_tar_${name}"]
+
+        }
     }
 
     if $::osfamily == 'RedHat'{
